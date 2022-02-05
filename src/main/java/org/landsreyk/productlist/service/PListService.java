@@ -14,7 +14,7 @@ public class PListService {
 
     protected final Logger logger = LogManager.getLogger(PListService.class);
     protected final PListRepository repo;
-    protected long currentId = 0;
+    protected long currentId = 1;
 
     public PListService(PListRepository repo) {
         this.repo = repo;

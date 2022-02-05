@@ -1,8 +1,8 @@
 # product-list
 repository for product-list project
 
-ссылка на swagger: https://app.swaggerhub.com/apis/AndrewKozyrev/ProductList/1.0#/default/get_products
-
+- api: https://app.swaggerhub.com/apis/AndrewKozyrev/ProductList/1.0#/default/get_products
+- база данных: mongodb (127.0.0.1:27017/product_list, landsreyk/12345678)
 
 # Техническое задание
 1.	Список продуктов
@@ -15,7 +15,7 @@ repository for product-list project
 
 Объекты
 
-## Product
+### Product
 
 long : id
 
@@ -25,7 +25,7 @@ String : description
 
 int : kcal
 
-## List 
+### List 
 long : id
 
 String : name
@@ -35,8 +35,7 @@ String : name
 В каждом List может быть любое количество Product.
 ## Задача
 
-Сохранение 
-
+**Сохранение**  
 Нужно сделать web сервис, который будет сохранять по API: 
 -	Product 
 -	List 
@@ -44,13 +43,13 @@ String : name
 
 Количество связей должно быть ограничено пунктом Связи. 
 
-Получение 
+**Получение**  
 API должно давать возможность получать списки: 
 -	Product 
 -	List со всеми Product, которые относятся к данному List по id 
 
 
-Усложнение 
+**Усложнение** 
 
 Добавьте Swagger к проекту. В запросе List просуммируйте kcal из Product в списке и верните вместе с List в ответе на запрос. 
 

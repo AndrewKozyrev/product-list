@@ -15,7 +15,7 @@ import java.util.Optional;
 public class ProductService {
     protected final Logger logger = LogManager.getLogger(ProductService.class);
     protected final ProductRepository repo;
-    protected long currentId = 0;
+    protected long currentId = 1;
 
     public ProductService(ProductRepository repo) {
         this.repo = repo;

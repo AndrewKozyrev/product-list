@@ -36,8 +36,14 @@ public class PListController {
             ObjectNode node = mapper.valueToTree(e.getKey());
             ArrayNode node2 = mapper.valueToTree(e.getValue());
             node.putArray("products").addAll(node2);
+            long totalKcal = e.getValue().stream()
+                    .map(Product::getKcal)
+                    .reduce(Integer::sum)
+                    .orElse(0);
+            node.put("total_kcal", totalKcal);
             root.add(node);
         });
+
         return ResponseEntity.ok().body(root);
     }
 
