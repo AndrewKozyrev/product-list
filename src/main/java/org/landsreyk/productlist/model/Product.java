@@ -1,5 +1,6 @@
 package org.landsreyk.productlist.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -17,4 +18,8 @@ public class Product {
     @Field("list_id")
     private Long listId;
 
+    @JsonProperty("list_id")
+    public Long getListId() {
+        return listId;
+    }
 }
