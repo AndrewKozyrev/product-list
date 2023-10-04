@@ -1,5 +1,6 @@
 package org.landsreyk.productlist.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.landsreyk.productlist.dto.ListData;
@@ -11,9 +12,8 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
+@Slf4j
 public class ProductListService {
-
-    protected final Logger logger = LogManager.getLogger(ProductListService.class);
     protected final ProductListRepository repo;
     protected long currentId;
 
@@ -36,7 +36,7 @@ public class ProductListService {
             }
             repo.save(list);
         } catch (Exception e) {
-            logger.fatal("invalid input, object invalid", e);
+            log.error("invalid input, object invalid", e);
             return Status.INVALID_LIST;
         }
         return Status.OK;

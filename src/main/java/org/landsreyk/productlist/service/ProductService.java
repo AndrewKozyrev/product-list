@@ -1,5 +1,6 @@
 package org.landsreyk.productlist.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.landsreyk.productlist.dto.ProductListBinding;
@@ -14,8 +15,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class ProductService {
-    protected final Logger logger = LogManager.getLogger(ProductService.class);
     protected final ProductRepository repo;
     protected long currentId;
 
@@ -38,7 +39,7 @@ public class ProductService {
             }
             repo.save(product);
         } catch (Exception e) {
-            logger.fatal("invalid input, object invalid", e);
+            log.error("invalid input, object invalid", e);
             return Status.INVALID_PRODUCT;
         }
         return Status.OK;
