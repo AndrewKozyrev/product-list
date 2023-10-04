@@ -3,9 +3,9 @@ package org.landsreyk.productlist.service;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.landsreyk.productlist.dto.ProductListBinding;
-import org.landsreyk.productlist.model.PList;
+import org.landsreyk.productlist.model.ProductList;
 import org.landsreyk.productlist.model.Product;
-import org.landsreyk.productlist.repository.PRepository;
+import org.landsreyk.productlist.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -14,12 +14,12 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
-public class PService {
-    protected final Logger logger = LogManager.getLogger(PService.class);
-    protected final PRepository repo;
+public class ProductService {
+    protected final Logger logger = LogManager.getLogger(ProductService.class);
+    protected final ProductRepository repo;
     protected long currentId;
 
-    public PService(PRepository repo) {
+    public ProductService(ProductRepository repo) {
         this.repo = repo;
         currentId = repo.findAll().stream().map(Product::getId).max(Long::compare).orElse(0L) + 1;
     }
@@ -52,13 +52,13 @@ public class PService {
         return repo.findById(id);
     }
 
-    public Status add(ProductListBinding binding, PListService pListService) {
+    public Status add(ProductListBinding binding, ProductListService productListService) {
         Optional<Product> optionalProduct = retrieveById(binding.getId());
         if (optionalProduct.isEmpty()) {
             return Status.PRODUCT_NOT_FOUND;
         }
         Product product = optionalProduct.get();
-        Optional<PList> optionalProductList = pListService.retrieveById(binding.getListId());
+        Optional<ProductList> optionalProductList = productListService.retrieveById(binding.getListId());
         if (optionalProductList.isEmpty()) {
             return Status.LIST_NOT_FOUND;
         } else if (product.getListId() != null && Objects.equals(product.getListId(), binding.getListId())) {

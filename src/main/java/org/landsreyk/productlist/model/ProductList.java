@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @Document(collection = "lists")
-public class PList {
+public class ProductList {
     @Id
     private Long id;
     private String name;
