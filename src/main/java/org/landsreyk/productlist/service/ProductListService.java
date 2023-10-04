@@ -4,29 +4,29 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.landsreyk.productlist.dto.ListData;
 import org.landsreyk.productlist.model.Product;
-import org.landsreyk.productlist.model.PList;
-import org.landsreyk.productlist.repository.PListRepository;
+import org.landsreyk.productlist.model.ProductList;
+import org.landsreyk.productlist.repository.ProductListRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
-public class PListService {
+public class ProductListService {
 
-    protected final Logger logger = LogManager.getLogger(PListService.class);
-    protected final PListRepository repo;
+    protected final Logger logger = LogManager.getLogger(ProductListService.class);
+    protected final ProductListRepository repo;
     protected long currentId;
 
-    public PListService(PListRepository repo) {
+    public ProductListService(ProductListRepository repo) {
         this.repo = repo;
-        currentId = repo.findAll().stream().map(PList::getId).max(Long::compare).orElse(0L) + 1;
+        currentId = repo.findAll().stream().map(ProductList::getId).max(Long::compare).orElse(0L) + 1;
     }
 
-    public List<PList> retrieveALl() {
+    public List<ProductList> retrieveALl() {
         return repo.findAll();
     }
 
-    public Status save(PList list) {
+    public Status save(ProductList list) {
         if (repo.exists(list.getId())) {
             return Status.ALREADY_EXISTS;
         }
@@ -42,11 +42,11 @@ public class PListService {
         return Status.OK;
     }
 
-    public List<ListData> retrieveLists(PService pService) {
+    public List<ListData> retrieveLists(ProductService productService) {
         List<ListData> list = new ArrayList<>();
-        List<PList> productLists = retrieveALl();
-        for (PList p : productLists) {
-            Collection<Product> products = pService.retrieveByListId(p.getId());
+        List<ProductList> productLists = retrieveALl();
+        for (ProductList p : productLists) {
+            Collection<Product> products = productService.retrieveByListId(p.getId());
             ListData item = new ListData();
             item.setList(p);
             item.setProducts(products);
@@ -60,7 +60,7 @@ public class PListService {
         return list;
     }
 
-    public Optional<PList> retrieveById(Long listId) {
+    public Optional<ProductList> retrieveById(Long listId) {
         return repo.findById(listId);
     }
 
