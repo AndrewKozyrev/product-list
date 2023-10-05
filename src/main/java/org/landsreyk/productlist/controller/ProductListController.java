@@ -3,7 +3,7 @@ package org.landsreyk.productlist.controller;
 import org.landsreyk.productlist.dto.ListData;
 import org.landsreyk.productlist.model.ProductList;
 import org.landsreyk.productlist.service.ProductListService;
-import org.landsreyk.productlist.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,16 +15,15 @@ import java.util.List;
 public class ProductListController {
 
     private final ProductListService productListService;
-    private final ProductService productService;
 
-    public ProductListController(ProductListService productListService, ProductService productService) {
+    @Autowired
+    public ProductListController(ProductListService productListService) {
         this.productListService = productListService;
-        this.productService = productService;
     }
 
     @GetMapping("/lists")
     public List<ListData> getLists() {
-        return productListService.retrieveLists(productService);
+        return productListService.retrieveLists();
     }
 
     @PostMapping("/lists")

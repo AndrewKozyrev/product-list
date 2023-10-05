@@ -1,25 +1,31 @@
 package org.landsreyk.productlist.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.landsreyk.productlist.dto.ListData;
 import org.landsreyk.productlist.model.Product;
 import org.landsreyk.productlist.model.ProductList;
 import org.landsreyk.productlist.repository.ProductListRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
 public class ProductListService {
     protected final ProductListRepository repo;
+
+    private final ProductService productService;
     protected long currentId;
 
-    public ProductListService(ProductListRepository repo) {
+    @Autowired
+    public ProductListService(ProductListRepository repo, ProductService productService) {
         this.repo = repo;
         currentId = repo.findAll().stream().map(ProductList::getId).max(Long::compare).orElse(0L) + 1;
+        this.productService = productService;
     }
 
     public List<ProductList> retrieveALl() {
@@ -42,7 +48,7 @@ public class ProductListService {
         return Status.OK;
     }
 
-    public List<ListData> retrieveLists(ProductService productService) {
+    public List<ListData> retrieveLists() {
         List<ListData> list = new ArrayList<>();
         List<ProductList> productLists = retrieveALl();
         for (ProductList p : productLists) {
