@@ -5,6 +5,7 @@ import org.landsreyk.productlist.dto.ProductListBinding;
 import org.landsreyk.productlist.model.Product;
 import org.landsreyk.productlist.model.ProductList;
 import org.landsreyk.productlist.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -16,10 +17,13 @@ import java.util.Optional;
 @Slf4j
 public class ProductService {
     protected final ProductRepository repo;
+    private final ProductListService productListService;
     protected long currentId;
 
-    public ProductService(ProductRepository repo) {
+    @Autowired
+    public ProductService(ProductRepository repo, ProductListService productListService) {
         this.repo = repo;
+        this.productListService = productListService;
         currentId = repo.findAll().stream().map(Product::getId).max(Long::compare).orElse(0L) + 1;
     }
 
@@ -51,7 +55,7 @@ public class ProductService {
         return repo.findById(id);
     }
 
-    public Status add(ProductListBinding binding, ProductListService productListService) {
+    public Status add(ProductListBinding binding) {
         Optional<Product> optionalProduct = retrieveById(binding.getId());
         if (optionalProduct.isEmpty()) {
             return Status.PRODUCT_NOT_FOUND;
