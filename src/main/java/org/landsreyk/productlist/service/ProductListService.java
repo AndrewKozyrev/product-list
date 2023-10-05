@@ -28,7 +28,7 @@ public class ProductListService {
         this.productService = productService;
     }
 
-    public List<ProductList> retrieveALl() {
+    public List<ProductList> retrieveAll() {
         return repo.findAll();
     }
 
@@ -50,7 +50,7 @@ public class ProductListService {
 
     public List<ListData> retrieveLists() {
         List<ListData> list = new ArrayList<>();
-        List<ProductList> productLists = retrieveALl();
+        List<ProductList> productLists = retrieveAll();
         for (ProductList p : productLists) {
             Collection<Product> products = productService.retrieveByListId(p.getId());
             ListData item = new ListData();

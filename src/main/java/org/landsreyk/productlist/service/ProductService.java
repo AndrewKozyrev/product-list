@@ -27,7 +27,7 @@ public class ProductService {
         currentId = repo.findAll().stream().map(Product::getId).max(Long::compare).orElse(0L) + 1;
     }
 
-    public List<Product> retrieveALl() {
+    public List<Product> retrieveAll() {
         return repo.findAll();
     }
 
