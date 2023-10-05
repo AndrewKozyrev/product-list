@@ -6,6 +6,7 @@ import org.landsreyk.productlist.model.Product;
 import org.landsreyk.productlist.model.ProductList;
 import org.landsreyk.productlist.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -16,14 +17,15 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class ProductService {
-    protected final ProductRepository repo;
-    private final ProductListService productListService;
+    protected ProductRepository repo;
+    @Autowired
+    @Lazy
+    private ProductListService productListService;
     protected long currentId;
 
     @Autowired
-    public ProductService(ProductRepository repo, ProductListService productListService) {
-        this.repo = repo;
-        this.productListService = productListService;
+    public ProductService(ProductRepository repository) {
+        this.repo = repository;
         currentId = repo.findAll().stream().map(Product::getId).max(Long::compare).orElse(0L) + 1;
     }
 

@@ -16,16 +16,16 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class ProductListService {
-    protected final ProductListRepository repo;
-
-    private final ProductService productService;
-    protected long currentId;
 
     @Autowired
-    public ProductListService(ProductListRepository repo, ProductService productService) {
-        this.repo = repo;
+    protected ProductListRepository repo;
+
+    @Autowired
+    private ProductService productService;
+    protected long currentId;
+
+    public ProductListService() {
         currentId = repo.findAll().stream().map(ProductList::getId).max(Long::compare).orElse(0L) + 1;
-        this.productService = productService;
     }
 
     public List<ProductList> retrieveAll() {
