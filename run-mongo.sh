@@ -1,1 +1,1 @@
-docker-compose up -d
+docker start product-list
