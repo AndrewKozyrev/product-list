@@ -17,14 +17,14 @@ import java.util.Optional;
 @Slf4j
 public class ProductListService {
 
-    @Autowired
-    protected ProductListRepository repo;
+    private final ProductListRepository repo;
 
     @Autowired
     private ProductService productService;
     protected long currentId;
 
-    public ProductListService() {
+    public ProductListService(ProductListRepository repository) {
+        this.repo = repository;
         currentId = repo.findAll().stream().map(ProductList::getId).max(Long::compare).orElse(0L) + 1;
     }
 
