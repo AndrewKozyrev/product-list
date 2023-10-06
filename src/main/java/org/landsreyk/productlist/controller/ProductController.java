@@ -1,18 +1,18 @@
 package org.landsreyk.productlist.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.landsreyk.productlist.dto.ProductListBinding;
 import org.landsreyk.productlist.model.Product;
 import org.landsreyk.productlist.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 public class ProductController {
 
-    @Autowired
-    private ProductService productService;
+    private final ProductService productService;
 
     @GetMapping("/products")
     public List<Product> getProducts() {
