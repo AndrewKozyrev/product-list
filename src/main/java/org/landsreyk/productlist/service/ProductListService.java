@@ -1,11 +1,13 @@
 package org.landsreyk.productlist.service;
 
+import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.landsreyk.productlist.dto.ListData;
 import org.landsreyk.productlist.model.Product;
 import org.landsreyk.productlist.model.ProductList;
 import org.landsreyk.productlist.repository.ProductListRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.landsreyk.productlist.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,32 +17,31 @@ import java.util.Optional;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class ProductListService {
 
-    private final ProductListRepository repo;
+    private final ProductListRepository productListRepository;
+    private final ProductRepository productRepository;
+    private long currentId;
 
-    @Autowired
-    private ProductService productService;
-    protected long currentId;
-
-    public ProductListService(ProductListRepository repository) {
-        this.repo = repository;
-        currentId = repo.findAll().stream().map(ProductList::getId).max(Long::compare).orElse(0L) + 1;
+    @PostConstruct
+    private void init() {
+        currentId = productListRepository.findAll().stream().map(ProductList::getId).max(Long::compare).orElse(0L) + 1;
     }
 
     public List<ProductList> retrieveAll() {
-        return repo.findAll();
+        return productListRepository.findAll();
     }
 
     public Status save(ProductList list) {
-        if (repo.exists(list.getId())) {
+        if (productListRepository.exists(list.getId())) {
             return Status.ALREADY_EXISTS;
         }
         try {
             if (list.getId() == null) {
                 list.setId(currentId++);
             }
-            repo.save(list);
+            productListRepository.save(list);
         } catch (Exception e) {
             log.error("invalid input, object invalid", e);
             return Status.INVALID_LIST;
@@ -52,7 +53,7 @@ public class ProductListService {
         List<ListData> list = new ArrayList<>();
         List<ProductList> productLists = retrieveAll();
         for (ProductList p : productLists) {
-            Collection<Product> products = productService.retrieveByListId(p.getId());
+            Collection<Product> products = productRepository.findByListId(p.getId());
             ListData item = new ListData();
             item.setList(p);
             item.setProducts(products);
@@ -67,7 +68,7 @@ public class ProductListService {
     }
 
     public Optional<ProductList> retrieveById(Long listId) {
-        return repo.findById(listId);
+        return productListRepository.findById(listId);
     }
 
     public enum Status {
